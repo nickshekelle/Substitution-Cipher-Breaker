@@ -13,6 +13,8 @@ input_string = "lgdtmodtl o ytts miam o ligwsr stm bgw ass qfgc miam mitkt ol a 
 # replace c3 with whatever character in the CA corresponds to c in the PA
 # _ is used to denote any letter for which you are uncertain about
 def decode(ciphertext):
+	#permenant copy of the cipher text
+	permciph = ciphertext
 
 	# gets a list of letters in cipher text by frequency (most frequent...least frequent)
 	ciph_dic = {i : ciphertext.count(i) for i in set(ciphertext)}
@@ -83,14 +85,88 @@ def decode(ciphertext):
 	double_temp.reverse()
 	double_letter_freq = [x[0] for x in double_temp]
 
-	guess(input_string, ciph_freq, eng_freq)
-	
-def guess(ciphertext, ciph_freq, alphabet):
-	ciph_temp = ciphertext
-	for x in ciphertext:
-		if(x != " "):
-			
+	print("Cipher Frequency information (Most frequent to least frequent): \n")
+	print("Lettter frequency for cipher:")
+	print(ciph_freq)
+	print("English letter frequency:")
+	print(eng_freq)
+	print()
+	print("Cipher double letter frequency:")
+	print(double_letter_freq)
+	print("English double letter frequency:")
+	print(double_letter_options)
+	print()
+	print("Cipher one letter word frequency:")
+	print(one_letter_freq)
+	print("English one letter word frequency:")
+	print(one_letter_options)
+	print()
+	print("Cipher two letter word frequency:")
+	print(two_letter_freq)
+	print("English two letter word frequency:")
+	print(two_letter_options)
+	print()
+	print("Cipher three letter word frequency:")
+	print(three_letter_freq)
+	print("English three letter word frequency:")
+	print(three_letter_options)
+	print()
+	print("Cipher Text:")
 	print(ciphertext)
+	print()
+	print("Input a guess (cipher_letter english_letter). Input 'back' to go back to previous guess, 'done' when cipher appears solved")
+	guess = ""
+	stack = []
+	ciphguess = ciphertext
+	while 1>0:
+		print("Cipher Frequency information (Most frequent to least frequent): \n")
+		print("Lettter frequency for cipher:")
+		print(ciph_freq)
+		print("English letter frequency:")
+		print(eng_freq)
+		print()
+		print("Cipher double letter frequency:")
+		print(double_letter_freq)
+		print("English double letter frequency:")
+		print(double_letter_options)
+		print()
+		print("Cipher one letter word frequency:")
+		print(one_letter_freq)
+		print("English one letter word frequency:")
+		print(one_letter_options)
+		print()
+		print("Cipher two letter word frequency:")
+		print(two_letter_freq)
+		print("English two letter word frequency:")
+		print(two_letter_options)
+		print()
+		print("Cipher three letter word frequency:")
+		print(three_letter_freq)
+		print("English three letter word frequency:")
+		print(three_letter_options)
+		print()
+		print(ciphguess)
+		guess = input("Guess: ")
+		if guess == "done":
+			break
+		if guess == "back":
+			stack.pop()
+			ciphguess = stack.pop()
+			print()
+			print("Previous guess was:")
+			print(ciphguess)
+		print("Your guess is " + guess)
+		ciph_freq_guess = ciph_freq
+		ciph_freq_guess[ciph_freq_guess.index(guess[0])] = guess[2]
+		for i in range(0, len(ciphertext)):
+			if ciphertext[i] == guess[0]:
+				ciphguess = ciphguess[:i] + guess[2] + ciphguess[i+1:]
+		stack.append(ciphguess)
+
+	
+
+def find(s, ch):
+    return [i for i, ltr in enumerate(s) if ltr == ch]
 		
 
 decode(input_string)
