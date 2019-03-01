@@ -1,4 +1,4 @@
-from spellchecker import SpellChecker
+#from spellchecker import SpellChecker
 
 # sucessfully generated frequency for cipher
 
@@ -25,6 +25,7 @@ def decode(ciphertext):
 	temp.sort(key=lambda tup: tup[1])
 	temp.reverse()
 	ciph_freq = [x[0] for x in temp]
+	perm_freq = ciph_freq
 
 
 	# gets one letter words frequency in one_letter_freq
@@ -85,6 +86,7 @@ def decode(ciphertext):
 	double_temp.reverse()
 	double_letter_freq = [x[0] for x in double_temp]
 
+	# various informational print statements
 	print("Cipher Frequency information (Most frequent to least frequent): \n")
 	print("Lettter frequency for cipher:")
 	print(ciph_freq)
@@ -116,12 +118,16 @@ def decode(ciphertext):
 	print()
 	print("Input a guess (cipher_letter english_letter). Input 'back' to go back to previous guess, 'done' when cipher appears solved")
 	guess = ""
-	stack = []
+	guess_stack = []
+	freq_guess_stack = []
 	ciphguess = ciphertext
+	guess_stack.append(ciphertext)
+	freq_guess_stack.append(ciph_freq)
 	while 1>0:
+		# more print statements
 		print("Cipher Frequency information (Most frequent to least frequent): \n")
-		print("Lettter frequency for cipher:")
-		print(ciph_freq)
+		print("Letter frequency for cipher:")
+		print(perm_freq)
 		print("English letter frequency:")
 		print(eng_freq)
 		print()
@@ -147,27 +153,31 @@ def decode(ciphertext):
 		print()
 		print(ciphguess)
 		guess = input("Guess: ")
+		# currently working for human guessing, and returning to previous guesses
 		if guess == "done":
 			break
 		if guess == "back":
-			stack.pop()
-			ciphguess = stack.pop()
-			print()
-			print("Previous guess was:")
-			print(ciphguess)
-		print("Your guess is " + guess)
-		ciph_freq_guess = ciph_freq
-		ciph_freq_guess[ciph_freq_guess.index(guess[0])] = guess[2]
-		for i in range(0, len(ciphertext)):
-			if ciphertext[i] == guess[0]:
-				ciphguess = ciphguess[:i] + guess[2] + ciphguess[i+1:]
-		stack.append(ciphguess)
+			if len(guess_stack) <= 1:
+				guess_stack.append(permciph) 
+				freq_guess_stack.append(perm_freq)
+			else:
+				guess_stack.pop()
+				freq_guess_stack.pop()
+				ciphguess = guess_stack.pop()
+				ciph_freq_guess = freq_guess_stack.pop()
+				print()
+				print("Previous guess was:")
+				print(ciphguess)
+		else:
+			print("Your guess is " + guess)
+			ciph_freq_guess = ciph_freq
+			ciph_freq_guess[ciph_freq_guess.index(guess[0])] = guess[2]
+			for i in range(0, len(ciphertext)):
+				if ciphertext[i] == guess[0]:
+					ciphguess = ciphguess[:i] + guess[2] + ciphguess[i+1:]
+			guess_stack.append(ciphguess)
+			freq_guess_stack.append(ciph_freq_guess)
 
-	
-
-def find(s, ch):
-    return [i for i, ltr in enumerate(s) if ltr == ch]
-		
 
 decode(input_string)
 
