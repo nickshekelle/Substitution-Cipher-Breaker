@@ -152,6 +152,7 @@ def decode(ciphertext):
 		print(three_letter_options)
 		print()
 		print(ciphguess)
+		print()
 		guess = input("Guess: ")
 		# currently working for human guessing, and returning to previous guesses
 		if guess == "done":
@@ -170,7 +171,7 @@ def decode(ciphertext):
 				print(ciphguess)
 		else:
 			print("Your guess is " + guess)
-			ciph_freq_guess = ciph_freq
+			ciph_freq_guess = ciph_freq[:]
 			ciph_freq_guess[ciph_freq_guess.index(guess[0])] = guess[2]
 			for i in range(0, len(ciphertext)):
 				if ciphertext[i] == guess[0]:
