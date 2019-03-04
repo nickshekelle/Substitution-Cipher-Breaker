@@ -116,14 +116,14 @@ def decode(ciphertext):
 	print("Cipher Text:")
 	print(ciphertext)
 	print()
-	print("Input a guess (cipher_letter english_letter). Input 'back' to go back to previous guess, 'done' when cipher appears solved")
+	print("Input a guess (cipher_letter english_letter). Input 'back' to go back to previous guess, 'auto' to see the computers attempt at solving, done' when cipher appears solved")
 	guess = ""
 	guess_stack = []
 	freq_guess_stack = []
 	ciphguess = ciphertext
 	guess_stack.append(ciphertext)
 	freq_guess_stack.append(ciph_freq)
-	while 1>0:
+	while True:
 		# more print statements
 		print("Cipher Frequency information (Most frequent to least frequent): \n")
 		print("Letter frequency for cipher:")
@@ -157,6 +157,10 @@ def decode(ciphertext):
 		# currently working for human guessing, and returning to previous guesses
 		if guess == "done":
 			break
+		if guess == "auto":
+			contin = True
+			while contin:
+				
 		if guess == "back":
 			if len(guess_stack) <= 1:
 				guess_stack.append(permciph) 
