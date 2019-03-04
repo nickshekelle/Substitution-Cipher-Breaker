@@ -1,5 +1,6 @@
-#from spellchecker import SpellChecker
+from spellchecker import SpellChecker
 
+spell = SpellChecker()
 # sucessfully generated frequency for cipher
 
 eng_freq = ['e', 't', 'a', 'o', 'i', 'n', 's', 'h', 'r', 'd', 'l', 'c', 'u', 
@@ -158,9 +159,67 @@ def decode(ciphertext):
 		if guess == "done":
 			break
 		if guess == "auto":
-			contin = True
-			while contin:
-				
+			ciph_freq_guess = ciph_freq[:]
+			# guess using entire frequency
+			for i in range(len(ciph_freq_guess)):
+				ciph_freq_guess[i] = eng_freq[i]
+			point = 0
+			for char in ciphertext:
+				if char != ' ':
+					ciphguess = ciphguess[:point] + ciph_freq_guess[ciph_freq.index(char)] + ciphguess[point+1:]
+				point = point + 1
+			# if one letter words are either I or a, we can assume that was a correct letter guess
+			a_count = 0
+			i_count = 0
+			for i in range(len(ciphertext)):
+				if ciphguess[i-1] == ' ' and ciphguess[i+1] == ' ':
+					if ciphertext[i] == 'a':
+						a_count += 1
+					if ciphertext[i] == 'i':
+						i_count += 1
+					if i_count < 1:
+						ciph_freq_guess[ciph_freq_guess.index(ciphguess[i])] = ciph_freq[ciph_freq.index(ciphguess[i])]
+					if a_count < 1:
+						ciph_freq_guess[ciph_freq_guess.index(ciphguess[i])] = ciph_freq[ciph_freq.index(ciphguess[i])]
+					if ciphertext[i] != 'a' and ciphertext[i] != 'i':
+						if i_count >= 1:
+							ciph_freq_guess[ciph_freq_guess.index(ciphguess[i])] = 'a'
+						else:
+							if a_count >= 1:
+								ciph_freq_guess[ciph_freq_guess.index(ciphguess[i])] = 'i'
+
+			# guess single letter word based on frequency
+			ciph_freq_guess[ciph_freq_guess.index(one_letter_freq[0])] = one_letter_options[0]
+			# guess top 2 double letters
+			let1 = double_letter_options[0]
+			let2 = double_letter_options[1]
+			elet1 = double_letter_options[0]
+			elet2 = double_letter_options[1]
+			ciph_freq_guess[ciph_freq_guess.index(let1[0])] = elet1[0]
+			ciph_freq_guess[ciph_freq_guess.index(let2[0])] = elet2[0]
+			#guess top two letter words
+			twolet = two_letter_options[0]
+			ctwolet = two_letter_freq[0]
+			for i in range(0, len(twolet)):
+				ciph_freq_guess[ciph_freq.index(ctwolet[i])] = twolet[i]
+			# test cipher alphabet guess
+			point = 0
+			for char in ciphertext:
+				if char != ' ':
+					ciphguess = ciphguess[:point] + ciph_freq_guess[ciph_freq.index(char)] + ciphguess[point+1:]
+				point = point + 1
+
+			# identify each word in the cipher
+			start_word = 0
+			for i in range(len(ciphertext)):
+				if ciphguess[i] == ' ':
+					tempword = ciphguess[start_word:i]
+					start_word = i+1
+					print("Possible candidates for: " + tempword)
+					print(spell.candidates(tempword))
+					print()
+			print(ciphguess)
+		
 		if guess == "back":
 			if len(guess_stack) <= 1:
 				guess_stack.append(permciph) 
