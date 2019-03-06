@@ -1,6 +1,8 @@
 # Substitution-Cipher-Breaker
 
 - Reads plain cipher text and keeps a frequency table of how often characters appear in the cipher text
-- Compares cipher character frequency to frequency of characters in English to decrypt the cipher text
-- Takes user inputted guesses
+- Displays frequency information to the user
+- allows the user to make letter guesses given the frequency information
+- uses a stack to allow users to go back to previous guess
+- user can choose to let the computer attempt to decrypt the cipher based on frequency information
 
